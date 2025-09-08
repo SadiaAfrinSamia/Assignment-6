@@ -31,10 +31,12 @@ body {
   text-decoration: none;
 }
 .btn-yellow {
+  color: #1b5e20; 
   background: #fdd835;
   border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
+  border-radius: 30px; 
+  padding: 10px 25px;
+  font-weight: bold;
   cursor: pointer;
 }
 
