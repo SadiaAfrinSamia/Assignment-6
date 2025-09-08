@@ -26,24 +26,35 @@
   </section>
 
   <!-- Categories + Cards -->
-  <section class="container">
+  <section class="shop-section">
+  <h2 class="section-title">Choose Your Trees</h2>
+  <div class="shop-container">
+    <!-- Categories -->
     <aside class="categories">
       <h3>Categories</h3>
       <ul id="category-list"></ul>
     </aside>
 
-    <div class="cards">
-      <h2>Choose Your Trees</h2>
-      <div id="tree-container" class="grid"></div>
-    </div>
+    <!-- Cards -->
+    <div class="cards" id="tree-container"></div>
 
     <!-- Cart -->
     <aside class="cart">
       <h3>Your Cart</h3>
       <ul id="cart-list"></ul>
-      <p>Total: <span id="cart-total">0</span></p>
+      <p><strong>Total:</strong> ৳<span id="cart-total">0</span></p>
     </aside>
-  </section>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="tree-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
 
   <!-- About Campaign -->
   <section class="about">
