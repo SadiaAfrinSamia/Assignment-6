@@ -276,15 +276,54 @@ body {
 
 
 /* Impact */
+/* Impact */
 .impact {
-  display: flex;
-  justify-content: space-around;
-  padding: 30px;
-  background: #e8f5e9;
-}
-.impact div {
+  background: #d7f5e1; /* light green background */
+  padding: 60px 20px;
   text-align: center;
 }
+
+.impact-title {
+  font-size: 2rem;
+  margin-bottom: 40px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.impact-cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.impact-card {
+  background: #fff;
+  padding: 30px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 250px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.impact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.impact-card h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2e7d32; /* dark green */
+  margin-bottom: 10px;
+}
+
+.impact-card p {
+  font-size: 1rem;
+  color: #555;
+}
+
 
 /* Donate */
 .donate {
