@@ -34,17 +34,25 @@ const normalizePlants = (payload) => {
     ? payload
     : [];
 
-  // Map to unified plant object
+  console.log("Raw plants data:", raw); // ✅ Debug log
+
   return raw.map(p => {
-    const id = first(p.id, p.plantId, p.plant_id, p._id);
-    const name = first(p.name, p.plant_name, p.title) ?? "Unnamed";
-    const description = first(p.description, p.details, p.desc, "");
-    const category = first(p.category, p.category_name, p.type, "General");
-    const price = Number(first(p.price, p.price_bdt, p.cost, 0)) || 0;
-    const image = first(p.image, p.img, p.thumbnail, p.image_url, "https://via.placeholder.com/400x250?text=No+Image");
+    const id = p.plantId || p.plant_id || p.id || p._id; 
+    console.log("Plant ID extracted:", id); // ✅ Debug log
+    console.log("Raw plant object:", p); // 👈 Add this
+    console.log("Extracted ID:", id);    // 👈 And this
+    const name = p.name || p.plant_name || "Unnamed";
+    const description = p.description || p.details || "";
+    const category = p.category || p.category_name || "General";
+    const price = Number(p.price || p.price_bdt || 0);
+    const image = p.image || p.img || p.thumbnail || p.image_url || 
+      "https://via.placeholder.com/400x250?text=No+Image";
+
     return { id, name, description, category, price, image };
   });
 };
+
+
 
 /* ---------------------------
    UI helpers
@@ -147,12 +155,14 @@ function displayTrees(trees) {
   }
 
   trees.forEach(tree => {
+    console.log("Tree data:", tree); // ✅ Debugging ID
+
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
       <img src="${tree.image}" alt="${tree.name}" />
       <h4 onclick="showModal('${tree.id}')">${tree.name}</h4>
-      <p>${(tree.description ?? "").slice(0, 60)}...</p>
+      <p>${(tree.description || "").slice(0, 60)}...</p>
       <span class="category-tag">${tree.category}</span>
       <p><strong>৳${tree.price}</strong></p>
       <button onclick="addToCart('${tree.name.replace(/'/g, "\\'")}', ${Number(tree.price) || 0})">Add to Cart</button>
@@ -161,35 +171,46 @@ function displayTrees(trees) {
   });
 }
 
+
+
 /* ---------------------------
    Modal (details)
 ---------------------------- */
 async function showModal(id) {
+  const modal = document.getElementById("tree-modal");
+  modal.style.display = "flex";
+  modalBody.innerHTML = `<p style="text-align:center;padding:20px;">Loading...</p>`;
+
   try {
     const raw = await fetchJSON(`https://openapi.programming-hero.com/api/plant/${id}`);
-    // detail may come as {plant: {...}} or {data: {...}} or directly the object
-    const p = raw?.plant || raw?.data || raw;
+    // The detail API structure: { plant: {...} }
+    const plant = raw?.plant || raw?.data || raw;
 
-    const tree = normalizePlants([p])[0]; // reuse normalizer
+    if (!plant || (!plant.name && !plant.plant_name)) {
+      modalBody.innerHTML = `<p style="text-align:center;">Tree details not found.</p>`;
+      return;
+    }
+
+    // Access fields directly from the detail response
+    const name = plant.name || plant.plant_name || "Unnamed";
+    const description = plant.description || plant.details || "No description available.";
+    const category = plant.category || plant.category_name || "General";
+    const price = plant.price || plant.price_bdt || 0;
+    const image = plant.image || plant.img || plant.thumbnail || "https://via.placeholder.com/400x250?text=No+Image";
 
     modalBody.innerHTML = `
-      <h2>${tree.name}</h2>
-      <img src="${tree.image}" alt="${tree.name}" />
-      <p>${tree.description || "No description available."}</p>
-      <p><strong>Category:</strong> ${tree.category}</p>
-      <p><strong>Price:</strong> ৳${tree.price}</p>
+      <h2>${name}</h2>
+      <img src="${image}" alt="${name}" style="max-width:100%;border-radius:8px;margin:10px 0;">
+      <p>${description}</p>
+      <p><strong>Category:</strong> ${category}</p>
+      <p><strong>Price:</strong> ৳${price}</p>
     `;
-    document.getElementById("tree-modal").style.display = "flex";
   } catch (e) {
     console.error(e);
-    modalBody.innerHTML = `<p>Failed to load details.</p>`;
-    document.getElementById("tree-modal").style.display = "flex";
+    modalBody.innerHTML = `<p style="text-align:center;color:red;">Failed to load details.</p>`;
   }
 }
 
-function closeModal() {
-  document.getElementById("tree-modal").style.display = "none";
-}
 
 /* ---------------------------
    Cart

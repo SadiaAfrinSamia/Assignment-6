@@ -212,18 +212,68 @@ body {
 }
 
 
-/* About */
-.about {
+
+/* About Campaign Section */
+.about-campaign {
+  background: #f0fff4; /* light green background */
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.about-title {
+  font-size: 2.2rem;
+  color: #000000;
+  margin-bottom: 40px;
+  font-weight: bold;
+}
+
+.about-container {
+  max-width: 1000px;
+  margin: 0 auto;
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
   align-items: center;
-  padding: 40px;
-  background: #fff;
+  gap: 40px;
+  text-align: left;
 }
-.about img {
-  width: 250px;
-  border-radius: 8px;
+
+.about-image img {
+  width: 300px;
+  border-radius: 12px;
 }
+
+.about-text {
+  flex: 1;
+}
+
+.about-text p {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.about-text ul {
+  list-style: disc;
+  padding-left: 20px;
+  font-size: 1rem;
+  color: #444;
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .about-image img {
+    width: 80%;
+  }
+  .about-text ul {
+    text-align: left;
+    display: inline-block;
+  }
+}
+
+
 
 /* Impact */
 .impact {
